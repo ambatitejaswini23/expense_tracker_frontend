@@ -13,7 +13,6 @@ opt = st.sidebar.selectbox(
 
 if opt == "ADD_EXPENSE":
 
-```
 st.header("ADD EXPENSE")
 
 with st.form("adding"):
@@ -46,11 +45,11 @@ with st.form("adding"):
         )
 
         st.success(res.json()["message"])
-```
+
 
 elif opt == "VIEW_EXPENSES":
 
-```
+
 st.header("VIEW EXPENSES")
 
 res = rq.get(f"{server_loc}/get_expenses")
@@ -60,11 +59,11 @@ data = res.json()["expenses"]
 df = pd.DataFrame(data)
 
 st.dataframe(df)
-```
+
 
 elif opt == "DELETE_EXPENSE":
 
-```
+
 st.header("DELETE EXPENSE")
 
 expense_id = st.number_input(
@@ -79,11 +78,11 @@ if st.button("DELETE"):
     )
 
     st.success(res.json()["message"])
-```
+
 
 elif opt == "UPDATE_EXPENSE":
 
-```
+
 st.header("UPDATE EXPENSE")
 
 expense_id = st.number_input(
@@ -120,4 +119,4 @@ if st.button("UPDATE"):
     )
 
     st.success(res.json()["message"])
-```
+
