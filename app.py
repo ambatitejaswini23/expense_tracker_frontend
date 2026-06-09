@@ -2,7 +2,6 @@
 
 with st.form("adding"):
 
-```
 title = st.text_input("Expense Title")
 
 amount = st.number_input("Amount", step=1)
@@ -30,13 +29,12 @@ if btn:
     )
 
     st.success(res.json()["message"])
-```
+
 
 # VIEW_EXPENSES section
 
 elif opt == "VIEW_EXPENSES":
 
-```
 st.header("VIEW EXPENSES")
 
 res = rq.get(f"{server_loc}/get_expenses")
@@ -46,13 +44,13 @@ data = res.json()["expenses"]
 df = pd.DataFrame(data)
 
 st.dataframe(df)
-```
+
 
 # DELETE_EXPENSE section
 
 elif opt == "DELETE_EXPENSE":
 
-```
+
 st.header("DELETE EXPENSE")
 
 expense_id = st.number_input(
@@ -67,13 +65,13 @@ if st.button("DELETE"):
     )
 
     st.success(res.json()["message"])
-```
+
 
 # UPDATE_EXPENSE section
 
 elif opt == "UPDATE_EXPENSE":
 
-```
+
 st.header("UPDATE EXPENSE")
 
 expense_id = st.number_input(
@@ -110,4 +108,4 @@ if st.button("UPDATE"):
     )
 
     st.success(res.json()["message"])
-```
+
