@@ -45,7 +45,10 @@ if opt == "ADD_EXPENSE":
                 json=new_data
             )
 
-            st.success(res.json()["message"])
+            if res.status_code == 200:
+                st.success(res.json()["message"])
+            else:
+                st.error(res.text)
 
 # VIEW EXPENSES
 elif opt == "VIEW_EXPENSES":
@@ -54,11 +57,16 @@ elif opt == "VIEW_EXPENSES":
 
     res = rq.get(f"{server_loc}/get_expenses")
 
-    data = res.json()["expenses"]
+    if res.status_code == 200:
 
-    df = pd.DataFrame(data)
+        data = res.json()["expenses"]
 
-    st.dataframe(df)
+        df = pd.DataFrame(data)
+
+        st.dataframe(df)
+
+    else:
+        st.error(res.text)
 
 # DELETE EXPENSE
 elif opt == "DELETE_EXPENSE":
@@ -67,6 +75,7 @@ elif opt == "DELETE_EXPENSE":
 
     expense_id = st.number_input(
         "Enter Expense ID",
+        min_value=1,
         step=1
     )
 
@@ -76,7 +85,10 @@ elif opt == "DELETE_EXPENSE":
             f"{server_loc}/delete_expense/{expense_id}"
         )
 
-        st.success(res.json()["message"])
+        if res.status_code == 200:
+            st.success(res.json()["message"])
+        else:
+            st.error(res.text)
 
 # UPDATE EXPENSE
 elif opt == "UPDATE_EXPENSE":
@@ -85,6 +97,7 @@ elif opt == "UPDATE_EXPENSE":
 
     expense_id = st.number_input(
         "Enter Expense ID",
+        min_value=1,
         step=1
     )
 
@@ -116,77 +129,7 @@ elif opt == "UPDATE_EXPENSE":
             json=update_data
         )
 
-        st.success(res.json()["message"])
-elif opt == "VIEW_EXPENSES":
-
-
-st.header("VIEW EXPENSES")
-
-res = rq.get(f"{server_loc}/get_expenses")
-
-data = res.json()["expenses"]
-
-df = pd.DataFrame(data)
-
-st.dataframe(df)
-
-
-elif opt == "DELETE_EXPENSE":
-
-
-st.header("DELETE EXPENSE")
-
-expense_id = st.number_input(
-    "Enter Expense ID",
-    step=1
-)
-
-if st.button("DELETE"):
-
-    res = rq.delete(
-        f"{server_loc}/delete_expense/{expense_id}"
-    )
-
-    st.success(res.json()["message"])
-
-
-elif opt == "UPDATE_EXPENSE":
-
-
-st.header("UPDATE EXPENSE")
-
-expense_id = st.number_input(
-    "Enter Expense ID",
-    step=1
-)
-
-title = st.text_input("New Title")
-
-amount = st.number_input(
-    "New Amount",
-    step=1
-)
-
-category = st.selectbox(
-    "New Category",
-    ["Food", "Travel", "Shopping", "Bills", "Entertainment"]
-)
-
-expense_date = st.date_input("New Expense Date")
-
-if st.button("UPDATE"):
-
-    update_data = {
-        "title": title,
-        "amount": amount,
-        "category": category,
-        "expense_date": str(expense_date)
-    }
-
-    res = rq.put(
-        f"{server_loc}/update_expense/{expense_id}",
-        json=update_data
-    )
-
-    st.success(res.json()["message"])
-
+        if res.status_code == 200:
+            st.success(res.json()["message"])
+        else:
+            st.error(res.text)
